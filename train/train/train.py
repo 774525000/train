@@ -2,6 +2,7 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from train.chaojiyin.chaojiying import Chaojiying_Client
 import base64
 
 
@@ -47,7 +48,11 @@ class Train:
             raise e
 
     @classmethod
-    def default(cls, url, email, password):
+    def default(cls, url, email, password, chaojiying_name, chaojiying_pass, chaojiying_app_id, pic_type):
         train = Train(url)
         pic_src = train.get_pic(email, password)
         save_pic(pic_src)
+        # 打码
+        chaojiying = Chaojiying_Client(chaojiying_name, chaojiying_pass, chaojiying_app_id)
+        im = open('./static/pic.png', 'rb').read()
+        print(chaojiying.PostPic(im, pic_type))
