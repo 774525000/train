@@ -25,10 +25,8 @@ class Train:
 
     def get_pic(self):
         try:
-            WebDriverWait(self.driver, 10).until(EC.visibility_of_element_located((By.CSS_SELECTOR, '#J-loginImg')))
-
-            # 获取验证码
-            return self.driver.find_element_by_css_selector("#J-loginImg").get_attribute('src')
+            element = WebDriverWait(self.driver, 10).until(EC.visibility_of_element_located((By.CSS_SELECTOR, '#J-loginImg')))
+            return element.get_attribute('src')
         except Exception as e:
             print(f"获取验证码失败:{e}")
             raise e
@@ -61,14 +59,14 @@ class Train:
             print(e)
             raise e
 
-    def click_img(self, arr):
+    def click_pic(self, arr):
         try:
             element = self.driver.find_element_by_css_selector("#J-loginImgArea")
             action = ActionChains(self.driver)
             for item in arr:
-                action.move_to_element_with_offset(element, int(item[0]),
-                                                   int(item[1])).click().perform()
-                sleep(1)
+                action.move_to_element_with_offset(element, int(item[0]) + randint(5, 10),
+                                                   int(item[1]) + randint(5, 10)).click().perform()
+                sleep(randint(1, 3))
         except Exception as e:
             print(e)
             raise e
@@ -109,7 +107,7 @@ class Train:
         # 输入账号密码
         train.enter_account(email, password)
         # 点击验证码
-        train.click_img(arr)
+        train.click_pic(arr)
         # 登录
         train.login()
 
