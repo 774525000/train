@@ -1,6 +1,6 @@
 import train
 
-HOME_URL = 'https://www.12306.cn/index/index.html'
+HOME_URL = 'https://kyfw.12306.cn/otn/resources/login.html'
 EMAIL = '774525000@qq.com'
 PASSWORD = '199441201q'
 CHAOJIYING_USERNAME = '774525000'

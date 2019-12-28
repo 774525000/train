@@ -6,7 +6,6 @@ from selenium.webdriver.common.action_chains import ActionChains
 from train.chaojiyin.chaojiying import Chaojiying_Client
 import base64
 from time import sleep
-from random import randint
 
 
 def save_pic(url):
@@ -35,11 +34,6 @@ class Train:
         try:
             self.driver.get(self.url)
             self.driver.maximize_window()
-            WebDriverWait(self.driver, 10).until(EC.presence_of_element_located((By.ID, 'J-header-login')))
-
-            # 获取登录按钮点击
-            self.driver.find_element_by_css_selector("#J-header-login a").click()
-
             # 进入登录页
             WebDriverWait(self.driver, 10).until(
                 EC.visibility_of_element_located((By.CSS_SELECTOR, '.login-code-main .code-pic')))
@@ -62,11 +56,10 @@ class Train:
     def click_pic(self, arr):
         try:
             element = self.driver.find_element_by_css_selector("#J-loginImgArea")
-            action = ActionChains(self.driver)
             for item in arr:
-                action.move_to_element_with_offset(element, int(item[0]) + randint(5, 10),
-                                                   int(item[1]) + randint(5, 10)).click().perform()
-                sleep(randint(1, 3))
+                ActionChains(self.driver).move_to_element_with_offset(element, int(item[0]),
+                                                   int(item[1])).click().perform()
+                sleep(1)
         except Exception as e:
             print(e)
             raise e
