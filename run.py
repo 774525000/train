@@ -1,3 +1,5 @@
+# -*- coding:utf-8  -*-
+
 import train
 
 HOME_URL = 'https://kyfw.12306.cn/otn/resources/login.html'

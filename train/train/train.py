@@ -1,34 +1,20 @@
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
+# -*- coding:utf-8  -*-
+
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.action_chains import ActionChains
 from train.chaojiyin.chaojiying import Chaojiying_Client
-import base64
+from selenium.webdriver.support.ui import WebDriverWait
+from train.utils.file import save_pic, get_pic
+from selenium.webdriver.common.by import By
+from train.utils.point import get_points
+from selenium import webdriver
 from time import sleep
-
-
-def save_pic(url):
-    try:
-        with open('./static/pic.png', 'wb') as f:
-            f.write(base64.b64decode(url.split(',')[1]))
-    except Exception as e:
-        print(f"保存图片失败:{e}")
-        raise e
 
 
 class Train:
     def __init__(self, url):
         self.url = url
         self.driver = webdriver.Chrome()
-
-    def get_pic(self):
-        try:
-            element = WebDriverWait(self.driver, 10).until(EC.visibility_of_element_located((By.CSS_SELECTOR, '#J-loginImg')))
-            return element.get_attribute('src')
-        except Exception as e:
-            print(f"获取验证码失败:{e}")
-            raise e
 
     def enter_login(self):
         try:
@@ -42,6 +28,15 @@ class Train:
             self.driver.find_element_by_css_selector(".login-hd .login-hd-account a").click()
         except Exception as e:
             print(e)
+            raise e
+
+    def get_pic(self):
+        try:
+            element = WebDriverWait(self.driver, 10).until(
+                EC.visibility_of_element_located((By.CSS_SELECTOR, '#J-loginImg')))
+            return element.get_attribute('src')
+        except Exception as e:
+            print(f"获取验证码失败:{e}")
             raise e
 
     def enter_account(self, email, password):
@@ -58,7 +53,7 @@ class Train:
             element = self.driver.find_element_by_css_selector("#J-loginImgArea")
             for item in arr:
                 ActionChains(self.driver).move_to_element_with_offset(element, int(item[0]),
-                                                   int(item[1])).click().perform()
+                                                                      int(item[1])).click().perform()
                 sleep(1)
         except Exception as e:
             print(e)
@@ -67,15 +62,6 @@ class Train:
     def login(self):
         try:
             self.driver.find_element_by_css_selector('#J-login').click()
-        except Exception as e:
-            print(e)
-            raise e
-
-    def get_points(self, res):
-        try:
-            if res.get('pic_str'):
-                pic_str = res['pic_str']
-                return [item.split(',') for item in pic_str.split('|')]
         except Exception as e:
             print(e)
             raise e
@@ -90,17 +76,15 @@ class Train:
         save_pic(pic_src)
         # 打码
         chaojiying = Chaojiying_Client(chaojiying_name, chaojiying_pass, chaojiying_app_id)
-        with open('./static/pic.png', 'rb') as f:
-            im = f.read()
+        # 获取图片
+        im = get_pic()
         # 获取打码结果
         res = chaojiying.PostPic(im, pic_type)
         # 获取坐标
-        arr = train.get_points(res)
-        print(arr)
+        arr = get_points(res)
         # 输入账号密码
         train.enter_account(email, password)
         # 点击验证码
         train.click_pic(arr)
         # 登录
         train.login()
-
