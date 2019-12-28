@@ -66,9 +66,9 @@ class Train:
             element = self.driver.find_element_by_css_selector("#J-loginImgArea")
             action = ActionChains(self.driver)
             for item in arr:
-                action.move_to_element_with_offset(element, int(item[0]) + randint(1, 5),
-                                                   int(item[1]) + randint(1, 5)).click().perform()
-                sleep(20)
+                action.move_to_element_with_offset(element, int(item[0]),
+                                                   int(item[1])).click().perform()
+                sleep(1)
         except Exception as e:
             print(e)
             raise e
@@ -105,10 +105,11 @@ class Train:
         res = chaojiying.PostPic(im, pic_type)
         # 获取坐标
         arr = train.get_points(res)
+        print(arr)
         # 输入账号密码
         train.enter_account(email, password)
         # 点击验证码
         train.click_img(arr)
         # 登录
-        # train.login()
+        train.login()
 
