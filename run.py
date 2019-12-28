@@ -1,6 +1,6 @@
 # -*- coding:utf-8  -*-
 
-import train
+import app
 
 HOME_URL = 'https://kyfw.12306.cn/otn/resources/login.html'
 EMAIL = '774525000@qq.com'
@@ -11,4 +11,4 @@ CHAOJIYIN_APP_ID = 902929
 PIC_TYPE = 9004
 
 if __name__ == '__main__':
-    train.run(HOME_URL, EMAIL, PASSWORD, CHAOJIYING_USERNAME, CHAOJIYING_PASSWORD, CHAOJIYIN_APP_ID, PIC_TYPE)
+    app.run(HOME_URL, EMAIL, PASSWORD, CHAOJIYING_USERNAME, CHAOJIYING_PASSWORD, CHAOJIYIN_APP_ID, PIC_TYPE)
